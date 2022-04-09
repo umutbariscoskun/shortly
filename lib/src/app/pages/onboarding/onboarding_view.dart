@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:shortly/src/app/constants.dart';
 import 'package:shortly/src/app/pages/onboarding/onboarding_controller.dart';
+import 'package:shortly/src/app/texts.dart';
 
 class OnboardingView extends View {
   @override
@@ -17,8 +18,6 @@ class _OnboardingViewState
 
   @override
   Widget get view {
-    PageController pageController = PageController(initialPage: 0);
-
     Size size = MediaQuery.of(context).size;
     EdgeInsets padding = MediaQuery.of(context).padding;
     return WillPopScope(
@@ -28,11 +27,18 @@ class _OnboardingViewState
         backgroundColor: kBackGroundColor,
         body: Column(
           children: [
+            Container(
+              width: 150,
+              height: 150,
+              child: Image(
+                image: AssetImage("assets/icons/shortly.png"),
+              ),
+            ),
             ControlledWidgetBuilder<OnboardingController>(
               builder: (context, controller) {
                 return Expanded(
                   child: PageView(
-                    controller: pageController,
+                    controller: controller.pageController,
                     physics: NeverScrollableScrollPhysics(),
                     onPageChanged: (index) {
                       controller.pageIndex = index;
@@ -43,7 +49,7 @@ class _OnboardingViewState
                         title: "SAYFA 1",
                         content: "SAYFA 1 İÇERİĞİ",
                         buttonOnpressed: () {
-                          pageController.animateToPage(1,
+                          controller.pageController.animateToPage(1,
                               duration: Duration(milliseconds: 235),
                               curve: Curves.linear);
                         },
@@ -56,7 +62,7 @@ class _OnboardingViewState
                         title: "SAYFA 2",
                         content: "SAYFA 2 İÇERİĞİ",
                         buttonOnpressed: () {
-                          pageController.animateToPage(2,
+                          controller.pageController.animateToPage(2,
                               duration: Duration(milliseconds: 235),
                               curve: Curves.linear);
                         },
@@ -69,20 +75,11 @@ class _OnboardingViewState
                         title: "SAYFA 3",
                         content: "SAYFA 3 İÇERİĞİ",
                         buttonOnpressed: () {
-                          pageController.animateToPage(3,
+                          controller.pageController.animateToPage(3,
                               duration: Duration(milliseconds: 235),
                               curve: Curves.linear);
                         },
                         index: 2,
-                        increaseForwardButtonCounter:
-                            controller.increaseForwardButtonCounter,
-                        forwardButtonCounter: controller.forwardButtonCounter,
-                      ),
-                      _OnboardCard(
-                        title: "SAYFA 4",
-                        content: "SAYFA 4 İÇERİĞİ",
-                        buttonOnpressed: () {},
-                        index: 3,
                         increaseForwardButtonCounter:
                             controller.increaseForwardButtonCounter,
                         forwardButtonCounter: controller.forwardButtonCounter,
@@ -92,6 +89,62 @@ class _OnboardingViewState
                 );
               },
             ),
+            ControlledWidgetBuilder<OnboardingController>(
+              builder: (context, controller) {
+                return Container(
+                  margin: EdgeInsets.only(bottom: 20, top: 15),
+                  width: 32,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: controller.pageIndex == 0
+                              ? kPrimaryColor
+                              : Color(0xFFC4C4C4).withOpacity(0.29),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: controller.pageIndex == 1
+                              ? kPrimaryColor
+                              : Color(0xFFC4C4C4).withOpacity(0.29),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: controller.pageIndex == 2
+                              ? kPrimaryColor
+                              : Color(0xFFC4C4C4).withOpacity(0.29),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            ControlledWidgetBuilder<OnboardingController>(
+              builder: (context, controller) {
+                return _SkipButton(
+                  controller.onSkipButtonPressed,
+                  controller.forwardButtonCounter,
+                  controller.increaseForwardButtonCounter,
+                );
+              },
+            ),
+            SizedBox(
+              height: padding.bottom + 50,
+            )
           ],
         ),
       ),
@@ -119,28 +172,25 @@ class _OnboardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double bottomPadding = MediaQuery.of(context).padding.bottom;
-    double topPadding = MediaQuery.of(context).padding.top;
-
-    return SizedBox(
+    return Container(
       width: size.width,
+      height: size.height * 0.46,
       child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(
+        physics: AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
         ),
         child: Stack(
           children: [
-            SizedBox(
+            Container(
               width: size.width,
               height: size.height,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Image(
-                          image: AssetImage("assets/icons/shortly.png"),
-                        ),
                         Text(
                           title,
                           style: TextStyle(
@@ -167,64 +217,100 @@ class _OnboardCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20, top: 15),
-                    width: 32,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: index == 0
-                                ? kPrimaryColor
-                                : Color(0xFFC4C4C4).withOpacity(0.29),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: index == 1
-                                ? kPrimaryColor
-                                : Color(0xFFC4C4C4).withOpacity(0.29),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: index == 2
-                                ? kPrimaryColor
-                                : Color(0xFFC4C4C4).withOpacity(0.29),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: index == 3
-                                ? kPrimaryColor
-                                : Color(0xFFC4C4C4).withOpacity(0.29),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text("Skip"),
-                  SizedBox(
-                    height: bottomPadding + 50,
-                  )
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SkipButton extends StatelessWidget {
+  final Function()? onPressed;
+  final int? forwardButtonCounterValue;
+  final Function()? increaseCounter;
+
+  _SkipButton(
+    this.onPressed,
+    this.forwardButtonCounterValue,
+    this.increaseCounter,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          increaseCounter!();
+
+          onPressed!();
+        },
+        child: Container(
+          child: Text(
+            ShortlyTexts.skip,
+          ),
+        ));
+  }
+}
+
+class _DefaultButton extends StatelessWidget {
+  final Function()? onPressed;
+  final Function()? increaseCounter;
+  final int? getForwardButtonCounterValue;
+  final String text;
+  final bool isAvailable;
+
+  _DefaultButton({
+    required this.onPressed,
+    this.increaseCounter,
+    this.getForwardButtonCounterValue,
+    required this.text,
+    required this.isAvailable,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          3,
+        ),
+      ),
+      width: 109,
+      height: 50,
+      child: TextButton(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: kWhite,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        onPressed: () {
+          if (increaseCounter != null) increaseCounter!();
+          if (isAvailable != false &&
+              (getForwardButtonCounterValue == null ||
+                  getForwardButtonCounterValue != null)) onPressed!();
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith(
+            (_) => isAvailable ? kPrimaryColor : kDisabledButtonColor,
+          ),
+          padding: MaterialStateProperty.resolveWith(
+            (_) => EdgeInsets.zero,
+          ),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          overlayColor: MaterialStateProperty.resolveWith(
+            (_) => Colors.transparent,
+          ),
+          minimumSize: MaterialStateProperty.resolveWith(
+            (_) => Size(
+              0,
+              0,
+            ),
+          ),
         ),
       ),
     );
