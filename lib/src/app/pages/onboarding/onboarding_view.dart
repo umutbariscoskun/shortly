@@ -175,53 +175,48 @@ class _OnboardCard extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height * 0.46,
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
-        child: Stack(
-          children: [
-            Container(
-              width: size.width,
-              height: size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          title,
+      child: Stack(
+        children: [
+          Container(
+            width: size.width,
+            height: size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w600,
+                          color: kBlack,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 28,
+                        ),
+                        child: Text(
+                          content,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.w600,
                             color: kBlack,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            height: 1.7,
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 28,
-                          ),
-                          child: Text(
-                            content,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: kBlack,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              height: 1.7,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
