@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:shortly/src/app/pages/home/home_presenter.dart';
+import 'package:shortly/src/data/exceptions/duplicate_link_exception.dart';
 import 'package:shortly/src/domain/entities/short_link.dart';
 import 'package:shortly/src/domain/repositories/short_link_repository.dart';
 
@@ -51,7 +52,7 @@ class HomeController extends Controller {
 
   void onShortenItButtonPressed() {
     isAddButtonPressed = true;
-    fullLinks.add(url!);
+    if (!fullLinks.contains(url!)) fullLinks.add(url!);
 
     addShortLinkToHistoryList();
     editingController.clear();

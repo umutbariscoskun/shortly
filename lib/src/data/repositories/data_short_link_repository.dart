@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:shortly/src/data/constants.dart';
+import 'package:shortly/src/data/exceptions/duplicate_link_exception.dart';
 import 'package:shortly/src/domain/entities/short_link.dart';
 import 'package:shortly/src/domain/repositories/short_link_repository.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,8 @@ class DataShortLinkRepository implements ShortLinkRepository {
   @override
   Future<void> addShortLinkToHistoryList(String path) async {
     try {
+      List<String> shortLinkIds = [];
+
       Response response;
       var url = Uri.parse(baseUrl + path);
 
@@ -34,9 +37,15 @@ class DataShortLinkRepository implements ShortLinkRepository {
         List<ShortLink> shortLinks = [];
         Map<String, dynamic> map = json.decode(response.body);
         List<dynamic> data = [map['result']];
+        for (int i = 0; i < _shortLinks.length; i++) {
+          shortLinkIds.add(_shortLinks[i].id);
+        }
         if (data.isNotEmpty) {
           data.map((shortLink) {
-            shortLinks.add(ShortLink.fromJson(shortLink));
+            ShortLink addedLink = ShortLink.fromJson(shortLink);
+            if (!shortLinkIds.contains(addedLink.id)) {
+              shortLinks.add(addedLink);
+            }
           }).toList();
           _shortLinks.addAll(shortLinks);
 
