@@ -36,6 +36,10 @@ dependencies:
   # Packages for ui development
   flutter_svg: ^1.0.3
 
+  # api request
+  http: ^0.13.4
+
+
 
 
 

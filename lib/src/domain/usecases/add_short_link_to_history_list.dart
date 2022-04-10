@@ -18,7 +18,7 @@ class AddShortLinkToHistoryList
     StreamController<void> controller = StreamController();
 
     try {
-      await _shortLinkRepository.addShortLinkToHistoryList(params!.shortLink);
+      await _shortLinkRepository.addShortLinkToHistoryList(params!.url);
       controller.close();
     } catch (e, st) {
       print(e);
@@ -30,9 +30,9 @@ class AddShortLinkToHistoryList
 }
 
 class AddShortLinkToHistoryListParams {
-  final ShortLink shortLink;
+  final String url;
 
   AddShortLinkToHistoryListParams(
-    this.shortLink,
+    this.url,
   );
 }

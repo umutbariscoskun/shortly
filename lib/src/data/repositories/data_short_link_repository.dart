@@ -1,21 +1,57 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:http/http.dart';
+import 'package:shortly/src/data/constants.dart';
 import 'package:shortly/src/domain/entities/short_link.dart';
 import 'package:shortly/src/domain/repositories/short_link_repository.dart';
+import 'package:http/http.dart' as http;
 
 class DataShortLinkRepository implements ShortLinkRepository {
   static final _instance = DataShortLinkRepository._internal();
   DataShortLinkRepository._internal();
   factory DataShortLinkRepository() => _instance;
 
+  StreamController<List<ShortLink>> _streamController =
+      StreamController.broadcast();
+
+  List<ShortLink> _shortLinks = [];
+
+  var header = {
+    "Access-Control_Allow_Origin": "*",
+    "Content-Type": "application/json",
+  };
+
   @override
-  Future<void> addShortLinkToHistoryList(ShortLink shortLink) {
-    // TODO: implement addShortLinkToHistoryList
-    throw UnimplementedError();
+  Future<void> addShortLinkToHistoryList(String path) async {
+    Response response;
+    var url = Uri.parse(baseUrl + path);
+
+    response = await http.get(url);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<ShortLink> shortLinks = [];
+      Map<String, dynamic> map = json.decode(response.body);
+      List<dynamic> data = [map['result']];
+      // List jsonResponse = json.decode(response.body)['result'];
+      if (data.isNotEmpty) {
+        data.map((shortLink) {
+          shortLinks.add(ShortLink.fromJson(shortLink));
+        }).toList();
+        _shortLinks.addAll(shortLinks);
+
+        _streamController.add(_shortLinks);
+      } else {
+        throw Exception(response.statusCode);
+      }
+    }
   }
 
   @override
   Stream<List<ShortLink>> getShortLinksFromHistory() {
-    // TODO: implement getShortLinksFromHistory
-    throw UnimplementedError();
+    _streamController.add(_shortLinks);
+
+    return _streamController.stream;
   }
 
   @override
