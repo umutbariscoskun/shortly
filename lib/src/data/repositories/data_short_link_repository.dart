@@ -35,11 +35,14 @@ class DataShortLinkRepository implements ShortLinkRepository {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         List<ShortLink> shortLinks = [];
+
         Map<String, dynamic> map = json.decode(response.body);
         List<dynamic> data = [map['result']];
+
         for (int i = 0; i < _shortLinks.length; i++) {
           shortLinkIds.add(_shortLinks[i].id);
         }
+
         if (data.isNotEmpty) {
           data.map((shortLink) {
             ShortLink addedLink = ShortLink.fromJson(shortLink);
@@ -47,6 +50,7 @@ class DataShortLinkRepository implements ShortLinkRepository {
               shortLinks.add(addedLink);
             }
           }).toList();
+
           _shortLinks.addAll(shortLinks);
 
           _streamController.add(_shortLinks);

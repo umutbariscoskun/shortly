@@ -46,43 +46,16 @@ class _OnboardingViewState
                     },
                     children: [
                       _OnboardCard(
-                        title: "SAYFA 1",
-                        content: "SAYFA 1 İÇERİĞİ",
-                        buttonOnpressed: () {
-                          controller.pageController.animateToPage(1,
-                              duration: Duration(milliseconds: 235),
-                              curve: Curves.linear);
-                        },
-                        index: 0,
-                        increaseForwardButtonCounter:
-                            controller.increaseForwardButtonCounter,
-                        forwardButtonCounter: controller.forwardButtonCounter,
+                        title: ShortlyTexts.brandRecognation,
+                        content: ShortlyTexts.boosYourBrand,
                       ),
                       _OnboardCard(
-                        title: "SAYFA 2",
-                        content: "SAYFA 2 İÇERİĞİ",
-                        buttonOnpressed: () {
-                          controller.pageController.animateToPage(2,
-                              duration: Duration(milliseconds: 235),
-                              curve: Curves.linear);
-                        },
-                        index: 1,
-                        increaseForwardButtonCounter:
-                            controller.increaseForwardButtonCounter,
-                        forwardButtonCounter: controller.forwardButtonCounter,
+                        title: ShortlyTexts.detailedRecords,
+                        content: ShortlyTexts.gainInsightsInto,
                       ),
                       _OnboardCard(
-                        title: "SAYFA 3",
-                        content: "SAYFA 3 İÇERİĞİ",
-                        buttonOnpressed: () {
-                          controller.pageController.animateToPage(3,
-                              duration: Duration(milliseconds: 235),
-                              curve: Curves.linear);
-                        },
-                        index: 2,
-                        increaseForwardButtonCounter:
-                            controller.increaseForwardButtonCounter,
-                        forwardButtonCounter: controller.forwardButtonCounter,
+                        title: ShortlyTexts.fullyCustomizable,
+                        content: ShortlyTexts.imroveBrand,
                       ),
                     ],
                   ),
@@ -99,34 +72,43 @@ class _OnboardingViewState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: controller.pageIndex == 0
-                              ? kPrimaryColor
-                              : Color(0xFFC4C4C4).withOpacity(0.29),
-                          shape: BoxShape.circle,
-                        ),
+                        width: controller.pageIndex == 0 ? 7 : 5,
+                        height: controller.pageIndex == 0 ? 7 : 5,
+                        decoration: controller.pageIndex == 0
+                            ? BoxDecoration(
+                                color: kGrey,
+                                shape: BoxShape.circle,
+                              )
+                            : BoxDecoration(
+                                border: Border.all(color: kGrey),
+                                shape: BoxShape.circle,
+                              ),
                       ),
                       Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: controller.pageIndex == 1
-                              ? kPrimaryColor
-                              : Color(0xFFC4C4C4).withOpacity(0.29),
-                          shape: BoxShape.circle,
-                        ),
+                        width: controller.pageIndex == 1 ? 7 : 5,
+                        height: controller.pageIndex == 1 ? 7 : 5,
+                        decoration: controller.pageIndex == 1
+                            ? BoxDecoration(
+                                color: kGrey,
+                                shape: BoxShape.circle,
+                              )
+                            : BoxDecoration(
+                                border: Border.all(color: kGrey),
+                                shape: BoxShape.circle,
+                              ),
                       ),
                       Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: controller.pageIndex == 2
-                              ? kPrimaryColor
-                              : Color(0xFFC4C4C4).withOpacity(0.29),
-                          shape: BoxShape.circle,
-                        ),
+                        width: controller.pageIndex == 2 ? 7 : 5,
+                        height: controller.pageIndex == 2 ? 7 : 5,
+                        decoration: controller.pageIndex == 2
+                            ? BoxDecoration(
+                                color: kGrey,
+                                shape: BoxShape.circle,
+                              )
+                            : BoxDecoration(
+                                border: Border.all(color: kGrey),
+                                shape: BoxShape.circle,
+                              ),
                       ),
                     ],
                   ),
@@ -155,67 +137,64 @@ class _OnboardingViewState
 class _OnboardCard extends StatelessWidget {
   final String title;
   final String content;
-  final Function() buttonOnpressed;
-  final int index;
-  final Function() increaseForwardButtonCounter;
-  final int forwardButtonCounter;
 
   const _OnboardCard({
     required this.title,
     required this.content,
-    required this.buttonOnpressed,
-    required this.index,
-    required this.increaseForwardButtonCounter,
-    required this.forwardButtonCounter,
   });
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double bottomPadding = MediaQuery.of(context).padding.bottom;
-    return Container(
-      width: size.width,
-      height: size.height * 0.46,
+    return Center(
       child: Stack(
+        alignment: Alignment.topCenter,
         children: [
-          Container(
-            width: size.width,
-            height: size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                width: size.width - 2 * horizontalPadding,
+                height: size.width / 2 + 100,
+              ),
+              Container(
+                width: size.width - 2 * horizontalPadding,
+                height: size.width / 2 + 55,
+                decoration: BoxDecoration(
+                  color: kWhite,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(
+                    left: horizontalPadding,
+                    right: horizontalPadding,
+                    top: 2 * horizontalPadding + 16,
+                  ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w600,
-                          color: kBlack,
+                        style: kLargeTitleStyle(
+                          kBlack,
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 28,
-                        ),
-                        child: Text(
-                          content,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: kBlack,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            height: 1.7,
-                          ),
-                        ),
+                      SizedBox(height: defaultSizeBoxPadding),
+                      Text(
+                        content,
+                        textAlign: TextAlign.center,
+                        style: (kContentStyleBold(kBlack)),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+          Image(
+            image: AssetImage("assets/images/brush.png"),
+            width: 100,
+          )
         ],
       ),
     );
