@@ -24,26 +24,31 @@ class DataShortLinkRepository implements ShortLinkRepository {
 
   @override
   Future<void> addShortLinkToHistoryList(String path) async {
-    Response response;
-    var url = Uri.parse(baseUrl + path);
+    try {
+      Response response;
+      var url = Uri.parse(baseUrl + path);
 
-    response = await http.get(url);
+      response = await http.get(url);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      List<ShortLink> shortLinks = [];
-      Map<String, dynamic> map = json.decode(response.body);
-      List<dynamic> data = [map['result']];
-      // List jsonResponse = json.decode(response.body)['result'];
-      if (data.isNotEmpty) {
-        data.map((shortLink) {
-          shortLinks.add(ShortLink.fromJson(shortLink));
-        }).toList();
-        _shortLinks.addAll(shortLinks);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        List<ShortLink> shortLinks = [];
+        Map<String, dynamic> map = json.decode(response.body);
+        List<dynamic> data = [map['result']];
+        if (data.isNotEmpty) {
+          data.map((shortLink) {
+            shortLinks.add(ShortLink.fromJson(shortLink));
+          }).toList();
+          _shortLinks.addAll(shortLinks);
 
-        _streamController.add(_shortLinks);
-      } else {
-        throw Exception(response.statusCode);
+          _streamController.add(_shortLinks);
+        } else {
+          throw Exception(response.statusCode);
+        }
       }
+    } catch (e, st) {
+      print(e);
+      print(st);
+      rethrow;
     }
   }
 
@@ -55,8 +60,10 @@ class DataShortLinkRepository implements ShortLinkRepository {
   }
 
   @override
-  Future<void> removeShortLinkFromHistory(String shortLinkId) {
-    // TODO: implement removeShortLinkFromHistory
-    throw UnimplementedError();
+  Future<void> removeShortLinkFromHistory(String shortLinkId) async {
+    int index =
+        _shortLinks.indexWhere((shortLink) => shortLink.id == shortLinkId);
+    _shortLinks.removeAt(index);
+    _streamController.add(_shortLinks);
   }
 }

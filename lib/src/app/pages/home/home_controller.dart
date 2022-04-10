@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:shortly/src/app/pages/home/home_presenter.dart';
 import 'package:shortly/src/domain/entities/short_link.dart';
@@ -9,8 +11,14 @@ class HomeController extends Controller {
   HomeController(ShortLinkRepository _shortLinkRepository)
       : _presenter = HomePresenter(_shortLinkRepository);
 
+  final TextEditingController editingController = TextEditingController();
+
   List<ShortLink>? shortLinks;
+  List<String> fullLinks = [];
   String? url;
+  bool isAddButtonPressed = false;
+  bool isItemCopiedToClipboard = false;
+  ShortLink? cachedShortlink;
 
   @override
   void onInitState() {
@@ -23,7 +31,7 @@ class HomeController extends Controller {
     _presenter.getShortLinksFromHistoryListOnNext =
         (List<ShortLink>? response) {
       shortLinks = response;
-      if (shortLinks != null) print(shortLinks!.first.fullShortLink);
+      isAddButtonPressed = false;
       refreshUI();
     };
     _presenter.getShortLinksFromHistoryListOnError = (e) {};
@@ -37,7 +45,16 @@ class HomeController extends Controller {
 
   void addShortLinkToHistoryList() {
     _presenter.addShortLinkToHistoryList(url!);
+
     refreshUI();
+  }
+
+  void onShortenItButtonPressed() {
+    isAddButtonPressed = true;
+    fullLinks.add(url!);
+
+    addShortLinkToHistoryList();
+    editingController.clear();
   }
 
   void removeShortLinkFromHistory(String shortLinkId) {
@@ -54,5 +71,23 @@ class HomeController extends Controller {
   void dispose() {
     _presenter.dispose();
     super.dispose();
+  }
+
+  void copyItemToClipboard(ShortLink shortLink) async {
+    await Clipboard.setData(ClipboardData(text: shortLink.fullShortLink));
+    final ClipboardData? _data = await Clipboard.getData('text/plain');
+    ScaffoldMessenger.of(getContext()).showSnackBar(const SnackBar(
+      content: Text('Copied to clipboard'),
+    ));
+
+    shortLinks!.forEach(
+      (element) {
+        element.id == shortLink.id
+            ? element.isCopied = true
+            : element.isCopied = false;
+      },
+    );
+
+    refreshUI();
   }
 }
