@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shortly/src/data/constants.dart';
 import 'package:shortly/src/data/exceptions/duplicate_link_exception.dart';
+import 'package:shortly/src/data/exceptions/http_status_code_exception.dart';
 import 'package:shortly/src/domain/entities/short_link.dart';
 import 'package:shortly/src/domain/repositories/short_link_repository.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +56,7 @@ class DataShortLinkRepository implements ShortLinkRepository {
 
           _streamController.add(_shortLinks);
         } else {
-          throw Exception(response.statusCode);
+          throw HttpStatusCodeEception();
         }
       }
     } catch (e, st) {
