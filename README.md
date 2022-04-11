@@ -1,17 +1,13 @@
 # shortly
 
-A new Flutter project.
+Projeyi bir günde bitirmiştim fakat daha önce hiç test yazmadığım, ve de canvasa şekil çizdirmediğim için öğrenip eklemeyi istedim. Tam zamanlı çalıştığım için fırsatım olmadı.
 
-## Getting Started
+# Proje Adımları
 
-This project is a starting point for a Flutter application.
+Projede Clean Architecture kurulumu yapıp domain katmanından kodlamaya başladım. İlk önce entity sonra abstract repo ve usecaseleri kodladım. Data Repoyu açıp abstract repodaki metotları override ettim. Son katman olarak View katmanında presenterdan kodlamaya başlayarak observer metotlarımı belirledim ve observerın içinde eror ve tamamlanma durumlarını ayarladım. Controller sayfasını kodlayıp ihtiyacım olan metotları yazdım. En son arayüzü kodladım. 
 
-A few resources to get you started if this is your first Flutter project:
+Projede genel olarak stringleri, renkleri, paddingleri constant olarak tanımlamaya ve düzenli tutmaya çalıştım. Arayüzde paddingleri ve fontları birebir olmasa da yakın şekilde kodlamaya çalıştım. Svg kütüphanesini indirdim ve sıkça da kullandım fakat GitHub' tan direkt indirirken sanırım formatında bozulma oluyor. Projede eksik çıkıyor görseller. Figmaya çekip oradan export etmeyi denedim yine olmadı. Ben de png olarak export edip kullandım. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
 # shortly
