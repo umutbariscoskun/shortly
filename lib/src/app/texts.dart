@@ -21,5 +21,5 @@ class ShortlyTexts {
   static String get yourLinkHistory => 'Your Link History';
 
   static String get copy => 'COPY';
-  static String get copied => 'COPIED';
+  static String get copied => 'COPIED!';
 }
