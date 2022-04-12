@@ -137,9 +137,9 @@ class _HomeViewState extends ViewState<HomeView, HomeController> {
                     Container(
                       width: size.width - 5 * horizontalPadding,
                       child: DefaultButton(
-                        onPressed: () {
-                          controller.onShortenItButtonPressed();
-                        },
+                        onPressed: controller.url != null
+                            ? () => controller.onShortenItButtonPressed()
+                            : null,
                         text: ShortlyTexts.shortenIt,
                         color: kPrimaryColor,
                       ),
