@@ -1,6 +1,6 @@
 # shortly
 
-Projeyi bir günde bitirmiştim fakat daha önce hiç test yazmadığım, ve de canvasa şekil çizdirmediğim için öğrenip eklemeyi istedim. Tam zamanlı çalıştığım için fırsatım olmadı.
+
 
 # Proje Adımları
 
